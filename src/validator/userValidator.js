@@ -44,7 +44,7 @@ class UserValidator {
   }
 
   async signUp (resolve, source, args, context, info) {
-    let { email } = args
+    let { email, firstName, lastName } = args
 
     email = validator.normalizeEmail(email)
     email = validator.trim(email)
@@ -59,6 +59,13 @@ class UserValidator {
 
     if (!validator.isLength(password, { min: 6 })) {
       return Promise.reject(new Error('Error: password'))
+    }
+
+    if (!validator.isLength(firstName, { min: 2 })) {
+      return Promise.reject(new Error('Error: firstName'))
+    }
+    if (!validator.isLength(lastName, { min: 2 })) {
+      return Promise.reject(new Error('Error: lastName'))
     }
 
     return resolve(source, args, context, info)

@@ -43,7 +43,9 @@ const signIn = {
         { expiresIn: process.env.JWT_EXPIRATION }
       )
 
-      return { accessToken }
+      return {
+        accessToken
+      }
     } catch (error) {
       return Promise.reject(error)
     }
@@ -55,9 +57,11 @@ const signUp = {
   type: 'AccessToken!',
   args: {
     email: 'String!',
-    password: 'String!'
+    password: 'String!',
+    firstName: 'String!',
+    lastName: 'String!'
   },
-  resolve: async ({ args: { email, password }, context: { i18n } }) => {
+  resolve: async ({ args: { email, password, firstName, lastName }, context: { i18n } }) => {
     try {
       let user = await UserModel.emailExist(email)
       if (user) {
@@ -69,6 +73,8 @@ const signUp = {
       user = await new UserModel({
         email,
         password: hash,
+        firstName,
+        lastName,
         locale: i18n.language
       }).save()
 
